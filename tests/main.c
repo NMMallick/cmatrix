@@ -2,7 +2,7 @@
 
 int main(int argc, char **argv)
 {
-    Matrix2d mat = createMat2d(3,3);
+    Matrix2d mat = createMat2d(1,2);
 
     zero2d(&mat);
     print_mat2d(&mat);
@@ -10,8 +10,13 @@ int main(int argc, char **argv)
     identity2d(&mat);
     print_mat2d(&mat);
 
-    mat.mat[0][1] = 2.0;
-    mat.mat[1][0] = 2.0;
+    double count = 0.0;
+    for(size_t i = 0; i < mat.rows; i++)
+    	for(size_t j = 0; j < mat.cols; j++)
+    	    mat.mat[i][j] = count++;
+
+    print_mat2d(&mat);
+    transpose2d(&mat);
     print_mat2d(&mat);
 
     free2d(&mat);

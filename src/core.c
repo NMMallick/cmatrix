@@ -17,7 +17,7 @@ void zero2f(Matrix2f *m)
 {
     if (m->mat == NULL)
 	m->mat = alloc_2f(m->rows, m->cols);
- 
+
     for (size_t i = 0; i < m->rows; i++)
 	for (size_t j = 0; j < m->cols; j++)
 	    m->mat[i][j] = 0.0;
@@ -25,6 +25,9 @@ void zero2f(Matrix2f *m)
 
 void identity2d(Matrix2d *m)
 {
+    if (m->rows != m->cols)
+	return;
+
     if (m->mat == NULL)
 	m->mat = alloc_2d(m->rows, m->cols);
 
@@ -47,6 +50,39 @@ void identity2f(Matrix2f *m)
 		m->mat[i][j] = 1.0;
 	    else
 		m->mat[i][j] = 0.0;
+}
+
+void transpose2d(Matrix2d *m)
+{
+    if (m->rows != m->cols)
+	return;
+
+    double **tmp = alloc_2d(m->rows, m->cols);
+    for (size_t i = 0; i < m->rows; i++)
+	for (size_t j = 0; j < m->cols; j++)
+	{
+	    tmp[j][i] = m->mat[i][j];
+	}
+
+    free2d(m);
+    m->mat = NULL;
+    m->mat = tmp;
+}
+
+void tranpose2f(Matrix2f *m)
+{
+    if (m->rows != m-> cols)
+	return;
+
+    float **tmp = alloc_2f(m->rows, m->cols);
+    for (size_t i = 0; i < m->rows; i++)
+	for (size_t j = 0; j < m->cols; j++)
+	{
+	    tmp[j][i] = m->mat[i][j];
+	}
+
+    free2f(m);
+    m->mat = tmp;
 }
 
 Matrix2d createMat2d(size_t rows, size_t cols)

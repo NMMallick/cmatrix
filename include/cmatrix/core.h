@@ -29,6 +29,9 @@ void zero2f(Matrix2f *m);
 void identity2d(Matrix2d *m);
 void identity2f(Matrix2f *m);
 
+void transpose2d(Matrix2d *m);
+void transpose2f(Matrix2f *m);
+
 void print_mat2d(Matrix2d *mat);
 void print_mat2f(Matrix2f *mat);
 
