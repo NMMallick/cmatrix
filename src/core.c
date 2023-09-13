@@ -3,6 +3,27 @@
 
 #include <cmatrix/core.h>
 
+static size_t __NUM_ALLOC_M2d__ = 0;
+static size_t __NUM_ALLOC_M2f__ = 0;
+
+static Matrix2d *m2dPtr;
+static Matrix2f *m2fPtr;
+
+/* typedef struct m2dCollector */
+/* { */
+/*     Matrix2d *mPtr; */
+/*     size_t size; */
+/* } m2dCollector; */
+
+/* typedef struct m2fCollector */
+/* { */
+/*     Matrix2f *mPtr; */
+/*     size_t size; */
+/* } m2fCollector; */
+
+/* static m2fCollector __m2fcol__ = {.mPtr = NULL, .numAlocMats=0}; */
+/* static m2dCollecter __m2dcol__ = {.mPtr = NULL, .numAlocMats=0}; */
+
 void zero2d(Matrix2d *m)
 {
     if (m->mat == NULL)
@@ -54,10 +75,7 @@ void identity2f(Matrix2f *m)
 
 void transpose2d(Matrix2d *m)
 {
-    if (m->rows != m->cols)
-	return;
-
-    double **tmp = alloc_2d(m->rows, m->cols);
+    double **tmp = alloc_2d(m->cols, m->cols);
     for (size_t i = 0; i < m->rows; i++)
 	for (size_t j = 0; j < m->cols; j++)
 	{
@@ -65,15 +83,15 @@ void transpose2d(Matrix2d *m)
 	}
 
     free2d(m);
-    m->mat = NULL;
     m->mat = tmp;
+
+    size_t dim_tmp = m->cols;
+    m->cols = m->rows;
+    m->rows = dim_tmp;
 }
 
 void tranpose2f(Matrix2f *m)
 {
-    if (m->rows != m-> cols)
-	return;
-
     float **tmp = alloc_2f(m->rows, m->cols);
     for (size_t i = 0; i < m->rows; i++)
 	for (size_t j = 0; j < m->cols; j++)
@@ -83,6 +101,36 @@ void tranpose2f(Matrix2f *m)
 
     free2f(m);
     m->mat = tmp;
+
+    size_t dim_tmp = m->cols;
+    m->cols = m->rows;
+    m->rows = dim_tmp;
+}
+
+// A*B
+Matrix2d multiply2d(Matrix2d *a, Matrix2d *b)
+{
+    Matrix2d m;
+    m.mat = NULL;
+
+    if (a->cols != b->rows)
+	return m;
+
+    m = createMat2d(a->rows, b->cols);
+
+    double sum;
+    for (size_t i = 0; i < a->rows; i++)
+	for (size_t k = 0; k < b->cols; k++)
+	{
+	    sum = 0.0;
+	    for (size_t j = 0; j < a->cols; j++)
+	    {
+		sum += a->mat[i][j]*b->mat[j][k];
+	    }
+	    m.mat[i][k] = sum;
+	}
+
+    return m;
 }
 
 Matrix2d createMat2d(size_t rows, size_t cols)
