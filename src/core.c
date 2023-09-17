@@ -133,6 +133,157 @@ Matrix2d multiply2d(Matrix2d *a, Matrix2d *b)
     return m;
 }
 
+Matrix2f multiply2f(Matrix2f *a, Matrix2f *b)
+{
+    Matrix2f m;
+    m.mat = NULL;
+
+    if (a->cols != b->rows)
+	return m;
+
+    m = createMat2f(a->rows, b->cols);
+
+    float sum;
+    for (size_t i = 0; i < a->rows; i++)
+	for (size_t k = 0; k < b->cols; k++)
+	{
+	    sum = 0.0;
+	    for (size_t j = 0; j < a->cols; j++)
+	    {
+		sum += a->mat[i][j]*b->mat[j][k];
+	    }
+	    m.mat[i][k] = sum;
+	}
+
+    return m;
+}
+
+// A + B
+Matrix2d add2d(Matrix2d *a, Matrix2d *b)
+{
+    Matrix2d res;
+    res->mat = NULL;
+
+    if (a->rows != b->rows && a->cols != b->cols)
+	return res;
+
+    res = createMat2f(a->rows, a->cols);
+
+    for (size_t i = 0; i < res->rows; i++)
+	for (size_t j = 0; j < res->cols; j++)
+	    res.mat[i][j] = a->mat[i][j] + b->mat[i][j];
+
+    return res;
+}
+
+Matrix2f add2d(Matrix2f *a, Matrix2f *b)
+{
+    Matrix2f res;
+    res->mat = NULL;
+
+    if (a->rows != b->rows && a->cols != b->cols)
+	return res;
+
+    res = createMat2f(a->rows, a->cols);
+
+    for (size_t i = 0; i < res->rows; i++)
+	for (size_t j = 0; j < res->cols; j++)
+	    res.mat[i][j] = a->mat[i][j] + b->mat[i][j];
+
+    return res;
+}
+
+Matrix2d sub2d(Matrix2d *a, Matrix2d *b)
+{
+    Matrix2d res;
+    res->mat = NULL;
+
+    if (a->rows != b->rows && a->cols != b->cols)
+	return res;
+
+    res = createMat2f(a->rows, a->cols);
+
+    for (size_t i = 0; i < res->rows; i++)
+	for (size_t j = 0; j < res->cols; j++)
+	    res.mat[i][j] = a->mat[i][j] - b->mat[i][j];
+
+    return res;
+}
+
+Matrix2f sub2f(Matrix2f *a, Matrix2f *b)
+{
+    Matrix2f res;
+    res->mat = NULL;
+
+    if (a->rows != b->rows && a->cols != b->cols)
+	return res;
+
+    res = createMat2f(a->rows, a->cols);
+
+    for (size_t i = 0; i < res->rows; i++)
+	for (size_t j = 0; j < res->cols; j++)
+	    res.mat[i][j] = a->mat[i][j] - b->mat[i][j];
+
+    return res;
+}
+
+Matrix2d inverse2d(Matrix2d *a)
+{
+    Matrix2d res;
+    res.mat = NULL;
+
+    if (a->rows != a->cols)
+	return res;
+
+    Matrix2d aug = createMatrix2d(a->rows, 2*a->cols);
+
+    // Create an augmented matrix [mat | I] where I is the identity matrix
+    for (int i = 0; i < a->rows; i++) {
+        for (int j = 0; j < a_cols; j++) {
+            aug.mat[i][j] = a->mat[i][j];
+            aug.mat[i][j + a->rows] = (i == j) ? 1.0 : 0.0;
+        }
+    }
+
+    // Perform row operations to get the identity matrix on the left side
+    for (int i = 0; i < a->rows; i++) {
+        if (aug.mat[i][i] == 0.0) {
+            return res; // Matrix is singular, cannot be inverted
+        }
+
+        // Scale the current row to have 1 on the diagonal
+        double scale = augmented[i][i];
+        for (int j = 0; j < 2*a->rows; j++) {
+            aug.mat[i][j] /= scale;
+        }
+
+        // Subtract multiples of the current row from other rows to get 0s below and above the diagonal
+        for (int j = 0; j < a->rows; j++) {
+            if (i != j) {
+                double factor = aug.mat[j][i];
+                for (int k = 0; k < 2*a->rows; k++) {
+                    aug.mat[j][k] -= factor * aug.mat[i][k];
+                }
+            }
+        }
+    }
+
+    // Copy the right half of the augmented matrix (the inverse) into the result
+    for (int i = 0; i < a->rows; i++) {
+        for (int j = 0; j < a->rows; j++) {
+            res.mat[i][j] = aug.mat[i][j + N];
+        }
+    }
+}
+
+Matrix2f inverse2f(Matrix2f *a)
+{
+    Matrix2f res;
+    res.mat = NULL;
+
+    return res;
+}
+
 Matrix2d createMat2d(size_t rows, size_t cols)
 {
     Matrix2d mat;

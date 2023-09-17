@@ -35,6 +35,15 @@ void transpose2f(Matrix2f *m);
 Matrix2d multiply2d(Matrix2d *a, Matrix2d *b);
 Matrix2f multiply2f(Matrix2f *a, Matrix2f *b);
 
+Matrix2d add2d(Matrix2d *a, Matrix2d *b);
+Matrix2f add2f(Matrix2f *a, Matrix2f *b);
+
+Matrix2d sub2d(Matrix2d *a, Matrix2d *b);
+Matrix2f sub2f(Matrix2f *a, Matrix2f *b);
+
+Matrix2d inverse2d(Matrix2d a*);
+Matrix2f inverse2f(Matrix2f a*);
+
 void print_mat2d(Matrix2d *mat);
 void print_mat2f(Matrix2f *mat);
 
