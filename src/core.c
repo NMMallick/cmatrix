@@ -4,27 +4,6 @@
 
 #include <cmatrix/core.h>
 
-static size_t __NUM_ALLOC_M2d__ = 0;
-static size_t __NUM_ALLOC_M2f__ = 0;
-
-static Matrix2d *m2dPtr;
-static Matrix2f *m2fPtr;
-
-/* typedef struct m2dCollector */
-/* { */
-/*     Matrix2d *mPtr; */
-/*     size_t size; */
-/* } m2dCollector; */
-
-/* typedef struct m2fCollector */
-/* { */
-/*     Matrix2f *mPtr; */
-/*     size_t size; */
-/* } m2fCollector; */
-
-/* static m2fCollector __m2fcol__ = {.mPtr = NULL, .numAlocMats=0}; */
-/* static m2dCollecter __m2dcol__ = {.mPtr = NULL, .numAlocMats=0}; */
-
 void zero2d(Matrix2d *m)
 {
     if (m->mat == NULL)
