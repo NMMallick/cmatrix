@@ -98,8 +98,10 @@ Matrix2f cofactor2f(Matrix2f *a);
 /**
  * @brief print out the element of a matrix
  */
+#ifdef DEBUG
 void print_mat2d(Matrix2d *mat);
 void print_mat2f(Matrix2f *mat);
+#endif
 
 // DO NOT TOUCH
 double** alloc_2d(size_t rows, size_t cols);

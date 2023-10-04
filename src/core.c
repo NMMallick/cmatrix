@@ -374,7 +374,6 @@ double det2d(Matrix2d *a)
 {
     if (a->rows != a->cols)
     {
-	printf("det2d(): invalid matrix sizes (%ldx%ld)\n", a->rows, a->cols);
 	exit(1);
     }
 
@@ -412,11 +411,9 @@ double det2d(Matrix2d *a)
 
 float det2f(Matrix2f *a)
 {
+    // TODO: setup some error ret value
     if (a->rows != a->cols)
-    {
-	printf("det2d(): invalid matrix sizes (%ldx%ld)\n", a->rows, a->cols);
 	exit(1);
-    }
 
     float n = a->rows;
 
@@ -472,6 +469,7 @@ Matrix2f createMat2f(size_t rows, size_t cols)
     return mat;
 }
 
+#ifdef DEBUG
 void print_mat2d(Matrix2d *mat)
 {
     printf("--------------------\n");
@@ -497,6 +495,7 @@ void print_mat2f(Matrix2f *mat)
     }
     printf("--------------------\n");
 }
+#endif
 
 double** alloc_2d(size_t rows, size_t cols)
 {
@@ -518,6 +517,8 @@ float** alloc_2f(size_t rows, size_t cols)
     {
 	ptr[i] = (float *) malloc(cols*sizeof(float));
     }
+
+    return ptr;
 }
 
 void free_mat(void **ptr, size_t rows, size_t cols)
